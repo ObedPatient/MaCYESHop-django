@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create Account</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container">
+		<div class="row justify-content-center" style="margin-top:40px;">
+			<div class="col-md-6">
+                <a href="{% url 'index' %}" class="logo" style="margin-left: 90px;">
+                    <img src="{% static 'Assets/img/logo1.png' %}" alt="">
+                </a>
+                <br>
+                
+                    {% for message in messages %}
+                    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                        <strong></strong>{{message}}
+                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                <br>
+				<div class="card">
+					<div class="card-body">
+                        <div class="header-logo">
+                           
+                        </div>
+						<h3 class="card-title"><strong> Create Account</strong></h3>
+                        <br>
+						<form action="{% url 'signup' %}" method="POST">
+							{% csrf_token %}
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label>First name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
+                                </div> <!-- form-group end.// -->
+                                <div class="col form-group">
+                                    <label>Last name</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" required>
+                                </div> <!-- form-group end.// -->
+                            </div> <!-- form-row end.// -->
+            
+            
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  <label>Email Address</label>
+                                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group col-md-6">
+                                  <label>Phone Number</label>
+                                  <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Enter Phone Number" required>
+                                </div> <!-- form-group end.// -->
+                            </div> <!-- form-row.// -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Create password</label>
+                                    <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Enter Paswword" required>
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group col-md-6">
+                                    <label>Repeat password</label>
+                                    <input type="password" class="form-control" id="pass1" name="pass2" placeholder="Confirm Password" required>
+                                </div> <!-- form-group end.// -->
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block"> Register  </button>
+                            </div> <!-- form-group// -->
+  
+						</form>
+					</div>
+				</div>
+
+                <p class="text-center mt-4" style="color: gray;">Already Have An Account? <a href="{% url 'login' %}">Signin</a></p>
+                
+			</div>
+            
+		</div>
+        
+	</div>
+
+    <br><br><br>
+	<div class="footer text-light py-3" style="border-top: 2px solid red;background-color: black;">
+		<div class="container text-center">
+			<p>&copy; 2023 My Company. All rights reserved.</p>
+		</div>
+	</div>
+
+</body>
+</html>
