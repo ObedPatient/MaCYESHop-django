@@ -60,7 +60,7 @@ Myshop
 						
 						<!-- store products -->
 						<div class="row">
-							
+							{% if products %}
 							{% for product in products %}
 							<!-- product -->
 							<div class="col-md-4 col-xs-6">
@@ -88,19 +88,40 @@ Myshop
 							</div>
 							<!-- /product -->
 							{% endfor %}
+							{% else %}
+							<div>
+								<h1>Oops! No results Found, Please Try again.</h1>
+							</div>
+							{% endif %}
 						</div>
 						<!-- /store products -->
 
 						<!-- store bottom filter -->
 						<div class="store-filter clearfix">
-							<span class="store-qty">Showing 20-100 products</span>
+							<span class="store-qty">Showing {{ product_count }} product</span>
+							{% if products.has_other_pages %}
 							<ul class="store-pagination">
-								<li class="active">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+								{% if products.has_previous %}
+								<li class=""><a href="?page={{ products.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+								{% else %}
+								<li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
+								{% endif %}
+
+								{% for i in products.paginator.page_range %}
+									{% if products.number == i %}
+								<li class="active">{{i}}</li>
+									{% else %}
+								<li><a href="?page={{i}}">{{i}}</a></li>
+								    {% endif %}
+									{% endfor %}
+
+								{% if products.has_next %}
+								<li><a href="?page={{products.next_page_number}}"><i class="fa fa-angle-right"></i></a></li>
+								{% else %}
+								<li class="disabled"><a href="#"><i class="fa fa-angle-right"></i></a></li>
+								{% endif %}
 							</ul>
+							{% endif %}
 						</div>
 						<!-- /store bottom filter -->
 					</div>

@@ -47,6 +47,8 @@ Product Detail
 
             <!-- Product details -->
             <div class="col-md-5">
+                <form action="{% url 'add_cart' single_product.id  %}" method="POST">
+                    {% csrf_token %}
                 <div class="product-details">
                     <h2 class="product-name">{{ single_product.product_name }}</h2>
                     <div>
@@ -60,25 +62,33 @@ Product Detail
                     <p>{{single_product.description }}</p>
 
                     <div class="product-options">
-                        <label>
+                        
+                         <label>
                             Size
-                            <select class="input-select">
-                                <option value="0">X</option>
+                            <select class="input-select" name="size" required>
+                                <option value="" disabled selected>Choose Size</option>
+                                {% for i in single_product.variation_set.sizes %}
+                                <option value="{{ i.variation_value }}">{{ i.variation_value }}</option>
+                                {% endfor %}
                             </select>
                         </label>
+                       
                         <label>
                             Color
-                            <select class="input-select">
-                                <option value="0">Red</option>
+                            <select class="input-select" name="color" required>
+                                <option value="" disabled selected>Choose Color</option>
+                                {% for i in single_product.variation_set.colors %}
+                                <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                {% endfor %}
                             </select>
                         </label>
                     </div>
 
                     <div class="add-to-cart">
                         {% if single_product.stock <= 0 %}
-                           
+                        <span class="product-available">Out of Stock</span>
                             {% else %}
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                        <button class="add-to-cart-btn" type="submit"><i class="fa fa-shopping-cart"></i> add to cart</button>
                         {% endif %}
                     </div>
 
@@ -102,6 +112,7 @@ Product Detail
                     </ul>
 
                 </div>
+            </form>
             </div>
             <!-- /Product details -->
 

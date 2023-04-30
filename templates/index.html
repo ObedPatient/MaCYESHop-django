@@ -19,7 +19,7 @@
 			<div class="col-md-4 col-xs-6">
 				<div class="shop">
 					<div class="shop-img">
-						<img src="{% static 'Assets/img/shop01.png' %}" alt="">
+						<img src="{{ category.cat_image.url }}" alt="">
 					</div>
 					<div class="shop-body">
 						<h3>{{ category.category_name }}<br>Collection</h3>
@@ -53,45 +53,49 @@
 			</div>
 			<!-- /section title -->
 
-			<!-- Products tab & slick -->
 			<div class="col-md-12">
 				<div class="row">
 					<div class="products-tabs">
 						<!-- tab -->
-						<div id="tab1" class="tab-pane active">
-							<div class="products-slick" data-nav="#slick-nav-1">
-								{% for product in products %}
+						<div id="tab2" class="tab-pane fade in active">
+							<div class="products-slick" data-nav="#slick-nav-2">
 								<!-- product -->
-								<a href="{{ product.get_url }}"><div class="product">
-									<div class="product-img">
+								{% for product in products %}
+								<div class="product">
+									<a href="{{ product.get_url }}"><div class="product-img">
 										<img src="{{ product.image.url }}" alt="">
-										<div class="product-label">
-											<!--<span class="sale">-30%</span>
-											<span class="new">NEW</span>-->
-										</div>
-									</div>
+										
+									</div></a>
 									<div class="product-body">
 										<p class="product-category">{{ product.category }}</p>
 										<h3 class="product-name"><a href="{{ product.get_url }}">{{ product.product_name }}</a></h3>
 										<h4 class="product-price">${{ product.price }}</h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
 										<div class="product-btns">
+											
 											<button class="quick-view"><a href="{{ product.get_url }}"><i class="fa fa-eye"></i></a><span class="tooltipp">quick view</span></button>
 										</div>
 									</div>
 									
 								</div>
-							</a>
 								<!-- /product -->
 								{% endfor %}
-
+								
 							</div>
-							<div id="slick-nav-1" class="products-slick-nav"></div>
+							<div id="slick-nav-2" class="products-slick-nav"></div>
 						</div>
 						<!-- /tab -->
 					</div>
 				</div>
 			</div>
-			<!-- Products tab & slick -->
+			<!-- /Products tab & slick -->
+
 		</div>
 		<!-- /row -->
 	</div>

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+
+{% endblock %}
+    {% block style %}
+    <style>
+    .minus-button,
+    .plus-button {
+      border: none;
+    }
+    
+    .quantity-input {
+      /* adjust the width as desired */
+      border: 1px solid #ccc; /* add a border to the input box */
+      border-radius: 4px; /* round the corners of the input box */
+       /* add some padding to the input box */
+    }
+    
+    </style>
+    
+
+    {% endblock %}
+{% block content %}
+<div class="container">
+  <br>
+  {% if not cart_items %}
+  <h2 class="text-center">Your Shopping cart Empty</h2>
+  <div class="text-center">
+    <a href="{% url 'index' %}"><button class="btn primary-btn">Continue Shopping</button></a>
+  </div>
+
+  {% else %}
+    <div class="row">
+        <br><br>
+      <div class="col-md-8">
+        <!-- cart items -->
+        <div class="cart">
+          <div class="card-header">
+            <h3>Your Cart</h3>
+          </div>
+          <div class="card-body">
+            <!-- cart item -->
+            <table class="table table-borderless table-sshopping-cart">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for cart_item in cart_items %}
+                    <tr>
+                        <td>
+                            <div class="product-widget">
+                                <div class="product-img">
+                                    <img src="{{ cart_item.product.image.url }}" alt="">
+                                </div>
+                                <div class="product-body">
+                                    <h3 class="product-name"><a href="{{ cart_item.product.get_url }}">{{ cart_item.product.product_name}}</a></h3>
+                                    <p class="text-muted small">
+                                      {% if cart_item.variations.all %}
+                                                {% for item in cart_item.variations.all %}
+                                                {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                                                {% endfor %}
+                                            {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product-quantity">
+                                <a href="{% url 'remove_cart' cart_item.product.id %}" class="minus-button" style="border: none;background-color: white;display: inline-block;"><i class="fa fa-minus"></i></a>&nbsp;&nbsp;
+                                <input type="text" value="{{ cart_item.quantity }}" style="width: 30px;border-radius: 4px; font-weight: bold;">
+                                <form action="{% url 'add_cart' cart_item.product.id %}" method="POST" style="width: 30px;display: inline-block;">
+                                  {% csrf_token %}
+                                  {% for item in cart_item.variations.all %}
+                                    <input type="hidden" name="{{ item.variation_category | lower }}" value="{{ item.variation_value | capfirst }}">
+                                  {% endfor %}
+                                  <button type="submit" class="plus-button" style="border: none;background-color: white;"><i class="fa fa-plus"></i></button>
+                                </form>
+                                
+                              </div>
+                        </td>
+                        <td>
+                            <var class="price" style="font-size: 15px;"><strong>$ {{ cart_item.sub_total }}</strong></var> <br>
+                            <small class="text-muted"><strong> ${{ cart_item.product.price }} each</strong></small>
+                        </td>
+                        <td>
+                            <div class="product-removal">
+                                <a href="{% url 'remove_cart_item' cart_item.product.id %}" onclick="return confirm('Are You sure You want to Delete This Item')" class="remove-product" style="border: none;background-color: white;"><i class="fa fa-trash-o"></i></a>
+                              </div>
+                        </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+            <!-- /cart item -->
+          </div>
+        </div>
+        <!-- /cart items -->
+      </div>
+      <div class="col-md-4" >
+        <!-- cart totals -->
+        <div class="card-totals">
+          <h3>Cart Totals</h3>
+          <table class="table">
+            <tr> <td>Total</td><td>${{ total }}</td></tr>
+          </table>
+          <a href="#" class="checkout-button">Proceed to Checkout</a>
+        </div>
+        <!-- /cart totals -->
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <br><br>
+  
+
+  
+{% endblock content %}
