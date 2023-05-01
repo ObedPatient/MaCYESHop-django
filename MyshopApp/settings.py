@@ -76,6 +76,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MyshopApp.wsgi.application'
 
+AUTH_USER_MODEL = 'MyAuth.Account'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -135,6 +137,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MESSAGE_TAGS = {
     messages.ERROR:'danger'
 }
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='lobedpatient@gmail.com'
+EMAIL_HOST_PASSWORD='jqqkomjqqaqfzdfs'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 
 
 
