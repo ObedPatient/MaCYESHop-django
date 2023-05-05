@@ -71,14 +71,14 @@
                         </td>
                         <td>
                             <div class="product-quantity">
-                                <a href="{% url 'remove_cart' cart_item.product.id %}" class="minus-button" style="border: none;background-color: white;display: inline-block;"><i class="fa fa-minus"></i></a>&nbsp;&nbsp;
+                                <a href="{% url 'delete_cart' cart_item.product.id cart_item.id %}" class="minus-button" style="border: none;background-color: white;display: inline-block;"><i class="fa fa-minus"></i></a>&nbsp;&nbsp;
                                 <input type="text" value="{{ cart_item.quantity }}" style="width: 30px;border-radius: 4px; font-weight: bold;">
                                 <form action="{% url 'add_cart' cart_item.product.id %}" method="POST" style="width: 30px;display: inline-block;">
                                   {% csrf_token %}
                                   {% for item in cart_item.variations.all %}
                                     <input type="hidden" name="{{ item.variation_category | lower }}" value="{{ item.variation_value | capfirst }}">
                                   {% endfor %}
-                                  <button type="submit" class="plus-button" style="border: none;background-color: white;"><i class="fa fa-plus"></i></button>
+                                  <button type="submit" class="plus-button" style="border: none;background-color: white;"><a href=""><i class="fa fa-plus"></i></a></button>
                                 </form>
                                 
                               </div>
@@ -89,7 +89,7 @@
                         </td>
                         <td>
                             <div class="product-removal">
-                                <a href="{% url 'remove_cart_item' cart_item.product.id %}" onclick="return confirm('Are You sure You want to Delete This Item')" class="remove-product" style="border: none;background-color: white;"><i class="fa fa-trash-o"></i></a>
+                                <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" onclick="return confirm('Are You sure You want to Delete This Item')" class="remove-product" style="border: none;background-color: white;"><i class="fa fa-trash-o"></i></a>
                               </div>
                         </td>
                     </tr>
@@ -108,7 +108,8 @@
           <table class="table">
             <tr> <td>Total</td><td>${{ total }}</td></tr>
           </table>
-          <a href="#" class="checkout-button">Proceed to Checkout</a>
+          <hr>
+          <a href="{% url 'checkout' %}" class="btn btn-primary btn-block checkout-button" style="background-color: #D10024;border: none;"><strong>Checkout</strong></a>
         </div>
         <!-- /cart totals -->
       </div>

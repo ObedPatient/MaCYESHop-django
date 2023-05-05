@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from StoreApp.models import Product
 from category.models import Category
-from carts.models import CartItem
-from carts.views import _cart_id
+from Carts.models import CartItem
+from Carts.views import _cart_id
 from django.db.models import Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse

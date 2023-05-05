@@ -25,5 +25,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('StoreApp/', include('StoreApp.urls')),
     path('MyAuth/', include('MyAuth.urls')),
-    path('carts/', include('carts.urls')),
+    path('Carts/', include('Carts.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

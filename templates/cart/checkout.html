@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-7">
+                <!-- Billing Details -->
+                <div class="billing-details">
+                    <div class="section-title">
+                        <h3 class="title">Billing address</h3>
+                    </div>
+                    <form action="" method="POST">
+                    <div class="form-group">
+                        <input class="input" type="text" name="first-name" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="last-name" placeholder="Last Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="address" placeholder="Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="city" placeholder="City" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="country" placeholder="Country" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="zip-code" placeholder="ZIP Code" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="tel" name="tel" placeholder="Telephone" required>
+                    </div>
+                    
+                </div>
+                <!-- /Billing Details -->       
+
+                <!-- Order notes -->
+                <div class="order-notes">
+                    <textarea class="input" placeholder="Order Notes"></textarea>
+                </div>
+                <!-- /Order notes -->
+            </div>
+
+            <!-- Order Details -->
+            <div class="col-md-5 order-details">
+                <div class="section-title text-center">
+                    <h3 class="title">Your Order</h3>
+                </div>
+                <div class="order-summary">
+                     <table class="table table-borderless table-sshopping-cart">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for cart_item in cart_items %}
+                    <tr>
+                        <td>
+                            <div class="product-widget">
+                                <div class="product-img">
+                                    <img src="{{ cart_item.product.image.url }}" alt="">
+                                </div>
+                                <div class="product-body">
+                                    <h3 class="product-name"><a href="{{ cart_item.product.get_url }}">{{ cart_item.product.product_name}}</a></h3>
+                                    <p class="text-muted small">
+                                      {% if cart_item.variations.all %}
+                                                {% for item in cart_item.variations.all %}
+                                                {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                                                {% endfor %}
+                                            {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product-quantity">
+                               <label for="" style="text-align: center;">{{ cart_item.quantity }}</label>
+                                
+                              </div>
+                        </td>
+                        <td>
+                            <var class="price" style="font-size: 15px;"><strong>$ {{ cart_item.sub_total }}</strong></var> <br>
+                            <small class="text-muted"><strong> ${{ cart_item.product.price }} each</strong></small>
+                        </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+                </div>
+                <div class="input-checkbox">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        <span></span>
+                        I've read and accept the <a href="#">terms & conditions</a>
+                    </label>
+                </div>
+                <button type="submit" class="primary-btn order-submit btn-block" >Place order</button>
+                </form>
+            </div>
+            <!-- /Order Details -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+		<!-- SECTION -->
+		
+		<!-- NEWSLETTER -->
+		<div id="newsletter" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="newsletter">
+							<p>Sign Up for the <strong>NEWSLETTER</strong></p>
+							<form>
+								<input class="input" type="email" placeholder="Enter Your Email">
+								<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+							</form>
+							<ul class="newsletter-follow">
+								<li>
+									<a href="#"><i class="fa fa-facebook"></i></a>
+								</li>
+								<li>
+									<a href="#"><i class="fa fa-twitter"></i></a>
+								</li>
+								<li>
+									<a href="#"><i class="fa fa-instagram"></i></a>
+								</li>
+								<li>
+									<a href="#"><i class="fa fa-pinterest"></i></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /NEWSLETTER -->
+{% endblock content %}

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from MyAuth.models import Account
+from Carts.views import _cart_id
+from Carts.models import Cart, CartItem
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
@@ -24,6 +26,7 @@ from django.core import mail
 from django.conf import settings
 from django.core.mail import EmailMessage
 import threading
+import requests
 
 
 # Create your views here.
@@ -99,9 +102,52 @@ def login(request):
         user=auth.authenticate(email=email, password=password)
 
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                if is_cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart=cart)
+
+                    # Getting the product variations by cart id  
+                    product_variation = []
+                    for item in cart_item:
+                        variation = item.variations.all()
+                        product_variation.append(list(variation))
+                    # get the cart items from the user to acess his product variations 
+                    cart_item = CartItem.objects.filter(user=user)
+                    ex_var_list = []
+                    id = []
+                    for item in cart_item:
+                        existing_variation = item.variations.all()
+                        ex_var_list.append(list(existing_variation))
+                        id.append(item.id)
+
+                    for pr in product_variation:
+                        if pr in ex_var_list:
+                            index = ex_var_list.index(pr)
+                            item_id = id[index]
+                            item = CartItem.objects.get(id=item_id)
+                            item.quantity += 1
+                            item.user = user
+                            item.save()
+                        else:
+                            cart_item = CartItem.objects.filter(cart=cart)
+                            for item in cart_item:
+                                item.user = user
+                                item.save()
+            except:
+                pass
             auth.login(request,user)
             #messages.success(request, "Logged In Succesfully") 
-            return redirect('index')
+            url = request.META.get('HHTP_REFERER')
+            try:
+                query = requests.utils.urlparse(url).query
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)               
+            except:
+                 return redirect('index')
         
         else:
             messages.error(request, "Invalid Login Credentials")
@@ -110,9 +156,18 @@ def login(request):
 
 @login_required(login_url='login')
 def logout(request):
+    cart_id = request.session.get('cart_id')
+
+    if cart_id:
+        try:
+            cart = Cart.objects.get(id=cart_id)
+            cart.cart_id = _cart_id(request)
+            cart.save()
+        except:
+            pass
+
     auth.logout(request)
-    messages.success(request,'log Out Success!')
-    return redirect('login')
+    return redirect('index')
 
 
 class RequestResetEmailView(View):
@@ -183,3 +238,9 @@ class SetNewPasswordView(View):
             messages.error(request,'Somthing Went Wrong')
             return render(request, 'auth/set-new-password.html',context)
         return render(request, 'auth/set-new-password.html',context)
+    
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, 'auth/dashboard.html')

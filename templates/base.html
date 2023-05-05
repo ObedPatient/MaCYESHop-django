@@ -50,7 +50,7 @@
 						<li><a href="{% url 'login' %}"><i class="fa fa-user-circle"></i> Sign In</a> &nbsp;|&nbsp; <a href="{% url 'signup' %}"><i class="fa fa-user-o"></i> Register</a></li>
 						{% else %}
 						<li><a href="#"><i class="fa fa-user-o"></i>WelCome {{ user.full_name }}</a></li>
-						<li><a href=""><i class="fa fa-dashboard"></i>Dashboard</a> &nbsp;|&nbsp; <a href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Logout</a></li>
+						<li><a href="{% url 'dashboard' %}"><i class="fa fa-dashboard"></i>Dashboard</a> &nbsp;|&nbsp; <a href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Logout</a></li>
 						{% endif %}
 					</ul>
 				</div>
